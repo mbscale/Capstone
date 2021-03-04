@@ -70,9 +70,5 @@ workflows:
   default:
      jobs:
        - build-app
-  deploy:
-     jobs:
        - deploy-infrastructure:
-          filters:
-            branches:
-              only: master
+          requires: [build-app]
