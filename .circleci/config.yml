@@ -38,7 +38,7 @@ jobs:
             . venv/bin/activate
             make lint
             
- deploy-infrastructure:
+  deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
     steps:
