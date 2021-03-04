@@ -70,6 +70,6 @@ jobs:
 workflows:
   default:
      jobs:
-       - build-app
+       #- build-app
        - deploy-infrastructure
            
