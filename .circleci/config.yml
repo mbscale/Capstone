@@ -38,6 +38,28 @@ jobs:
           command: |
             . venv/bin/activate
             make lint
+
+
+  build-container:
+    docker:
+      - image: circleci/golang:1.15
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS  # context / project UI env-var reference
+    steps:
+      - checkout
+      # ... steps for building/testing app ...
+
+      - setup_remote_docker:
+          version: 19.03.13
+          docker_layer_caching: true
+
+      # build and push Docker image
+      - run: |
+          TAG=0.1.$CIRCLE_BUILD_NUM
+          docker build -t CircleCI-Public/circleci-demo-docker:$TAG .
+          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+          docker push CircleCI-Public/circleci-demo-docker:$TAG
             
   deploy-infrastructure:
     docker:
@@ -67,9 +89,45 @@ jobs:
                --request PUT \
                --data ${PUBLIC_DNS} \
                https://api.memstash.io/values/public_dns
+
+
+  deploy-app-ec2:
+    docker:
+      - image: python:3.7.3-stretch
+    steps:
+      - checkout
+      - run:
+          name: Install system dependencies
+          command: |
+            apk add --no-cache curl
+            apk add --no-cache --upgrade bash
+            apk add --no-cache --update ansible
+            apk add --no-cache openssh-client
+            pip3 install awscli
+      - run:
+          name: Get the public DNS of EC2 instance from https://memstash.io/
+          command: |
+            PUBLIC_DNS=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/public_dns)
+            echo ${PUBLIC_DNS}
+            echo ${CIRCLE_WORKFLOW_ID}
+            cd .circleci/ansible/
+            echo "[all]" > ./inventory
+            echo ${PUBLIC_DNS} >> ./inventory
+            cat ./inventory
+      - add_ssh_keys:
+          fingerprints: ["a7:23:6d:9d:6e:ac:87:5d:f3:3c:e9:9d:fd:af:15:3b"] #get it from CircleCI -> Project Settings -> SSH Keys -> Additional SSH Keys
+      - run:
+          name: Configure server via ansible to deploy the backend
+          no_output_timeout: 30m
+          command: |
+            
+            cd .circleci/ansible/
+            ansible-playbook -i ./inventory deploy.yml
+
 workflows:
   default:
      jobs:
        #- build-app
-       - deploy-infrastructure
+       #- deploy-infrastructure
+       - build-container
            
