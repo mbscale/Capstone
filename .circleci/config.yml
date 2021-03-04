@@ -66,3 +66,13 @@ jobs:
                --request PUT \
                --data ${PUBLIC_DNS} \
                https://api.memstash.io/values/public_dns
+workflows:
+  default:
+     jobs:
+       - build-app
+  deploy:
+     jobs:
+       - deploy-infrastructure:
+          filters:
+            branches:
+              only: master
