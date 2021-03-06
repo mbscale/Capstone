@@ -116,7 +116,7 @@ jobs:
             echo ${PUBLIC_DNS} >> ./inventory
             cat ./inventory
       - add_ssh_keys:
-          fingerprints: ["a7:23:6d:9d:6e:ac:87:5d:f3:3c:e9:9d:fd:af:15:3b"] #get it from CircleCI -> Project Settings -> SSH Keys -> Additional SSH Keys
+          fingerprints: ["a7:23:6d:9d:6e:ac:87:5d:f3:3c:e9:9d:fd:af:15:3b"] #get it from CircleCI -> Project Settings -> SSH Keys -> Additional SSH Keys.
       - run:
           name: Configure server via ansible to deploy the backend
           no_output_timeout: 30m
