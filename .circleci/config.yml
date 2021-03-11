@@ -93,7 +93,7 @@ jobs:
           get-rollout-status: true
           resource-file-path: blue-controller.json
           resource-name: deployment/blue
-      - kubernetes/create-or-update-resource:
+      - kubernetes/created-or-update-resource:
           get-rollout-status: true
           resource-file-path: blue-green-service.json
           resource-name: deployment/service
@@ -111,7 +111,9 @@ workflows:
        #- build-app
        #- deploy-infrastructure
        #- build-container#
-        - create-eks-cluster
+        - create-eks-cluster:
+            region: AWS_DEFAULT_REGION
         - create-or-update-eks-deployment:
+            region: AWS_DEFAULT_REGION
             requires: [create-eks-cluster]
            
