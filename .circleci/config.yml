@@ -112,8 +112,8 @@ workflows:
        #- deploy-infrastructure
        #- build-container#
         - create-eks-cluster:
-            region: AWS_DEFAULT_REGION
+            cluster-name: << parameters.cluster-name >>
         - create-or-update-eks-deployment:
-            region: AWS_DEFAULT_REGION
+            cluster-name: << parameters.cluster-name >>
             requires: [create-eks-cluster]
            
