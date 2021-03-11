@@ -174,5 +174,6 @@ workflows:
        #- deploy-infrastructure
        #- build-container#
         - create-eks-cluster
-        - create-or-update-eks-deployment
+        - create-or-update-eks-deployment:
+            requires: [create-eks-cluster]
            
