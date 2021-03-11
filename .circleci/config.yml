@@ -112,8 +112,8 @@ workflows:
        #- deploy-infrastructure
        #- build-container#
         - create-eks-cluster:
-            cluster-name: << parameters.cluster-name >>
+            cluster-name: my-cap-cluster
         - create-or-update-eks-deployment:
-            cluster-name: << parameters.cluster-name >>
+            cluster-name: my-cap-cluster
             requires: [create-eks-cluster]
            
