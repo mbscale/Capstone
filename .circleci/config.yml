@@ -172,7 +172,7 @@ workflows:
      jobs:
        #- build-app
        #- deploy-infrastructure
-       #- build-container
+       #- build-container#
         - create-eks-cluster
         - create-or-update-eks-deployment
            
