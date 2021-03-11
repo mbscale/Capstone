@@ -89,11 +89,11 @@ jobs:
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: << pipeline.parameters.cluster-name >>
           install-kubectl: true
-      - kubernetes/deploy-blue:
+      - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: blue-controller.json
           resource-name: deployment/blue
-      - kubernetes/deploy-service:
+      - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: blue-green-service.json
           resource-name: deployment/service
