@@ -105,15 +105,15 @@ jobs:
           install-kubectl: true
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: blue-controller.json
+          resource-file-path: "blue-controller.json"
           resource-name: deployment/blue
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: green-controller.json
+          resource-file-path: "green-controller.json"
           resource-name: deployment/green
       - kubernetes/created-or-update-resource:
           get-rollout-status: true
-          resource-file-path: blue-green-service.json
+          resource-file-path: "blue-green-service.json"
           resource-name: deployment/service
       - run:
           name: Check the Resources
@@ -131,7 +131,7 @@ jobs:
           install-kubectl: true
       - kubernetes/created-or-update-resource:
           get-rollout-status: true
-          resource-file-path: blue-green-service.json
+          resource-file-path: "blue-green-service.json"
           resource-name: deployment/servicegreen
       - run:
           name: Check the Resources
