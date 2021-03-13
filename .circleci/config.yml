@@ -7,7 +7,7 @@ orbs:
 parameters:
   cluster-name:
     type: string
-    default: "my-cap-cluster"
+    default: "capstone-cluster"
 jobs:
   build-app:
     docker:
