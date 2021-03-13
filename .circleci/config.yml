@@ -41,13 +41,27 @@ jobs:
             - ./venv
           key: v1-dependencies-{{ checksum "requirements.txt" }}
 
-      # run lint!
+      # run code lint!
       - run:
           name: run lint
           command: |
             . venv/bin/activate
             make lint
-
+# Lint DockerFile
+  Lint:
+    docker:
+      - image: python:3.7.3-stretch
+    steps:
+      - checkout
+      - run:
+          name : install hado Lint 
+          command: | 
+            wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
+            chmod +x /bin/hadolint
+      - run:
+          name : Hadolint 
+          command: | 
+            hadolint Dockerfile 
 
   build-container:
     docker:
@@ -66,10 +80,10 @@ jobs:
       # build and push Docker image
       - run: |
           TAG=0.1.$CIRCLE_BUILD_NUM
-          docker build --tag mbscale/capstoneapp-$CIRCLE_WORKFLOW_ID .
+          docker build --tag mbscale/capstoneapp-green-$CIRCLE_WORKFLOW_ID .
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
           docker tag mbscale/capstoneapp-$CIRCLE_WORKFLOW_ID:latest $DOCKER_USER/capstone-app-$CIRCLE_WORKFLOW_ID:latest
-          docker push $DOCKER_USER/capstone-app-$CIRCLE_WORKFLOW_ID:latest
+          docker push $DOCKER_USER/capstone-app-green-$CIRCLE_WORKFLOW_ID:latest
           
   create-eks-cluster:
     executor: aws-eks/python3
@@ -108,12 +122,14 @@ jobs:
 workflows:
   default:
      jobs:
-       #- build-app
-       #- deploy-infrastructure
-       #- build-container#
-        - create-eks-cluster:
-            cluster-name: my-cap-cluster
-        - create-or-update-eks-deployment:
-            cluster-name: my-cap-cluster
-            requires: [create-eks-cluster]
+       - build-app
+       - Lint
+       - build-container
+       # - create-eks-cluster:
+       #     cluster-name: my-cap-cluster
+       # - create-or-update-eks-deployment:
+       #     cluster-name: my-cap-cluster
+       #     requires: [create-eks-cluster]
+       # - aws-eks/delete-cluster:
+       #     cluster-name: my-cap-cluster
            
