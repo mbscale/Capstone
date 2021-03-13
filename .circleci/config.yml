@@ -47,8 +47,8 @@ jobs:
           command: |
             . venv/bin/activate
             make lint
-# Lint DockerFile
-  Lint:
+# Lint Docker
+  lint-docker:
     docker:
       - image: python:3.7.3-stretch
     steps:
@@ -82,7 +82,7 @@ jobs:
           TAG=0.1.$CIRCLE_BUILD_NUM
           docker build --tag mbscale/capstoneapp-green-$CIRCLE_WORKFLOW_ID .
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          docker tag mbscale/capstoneapp-$CIRCLE_WORKFLOW_ID:latest $DOCKER_USER/capstone-app-$CIRCLE_WORKFLOW_ID:latest
+          docker tag mbscale/capstoneapp-green-$CIRCLE_WORKFLOW_ID:latest $DOCKER_USER/capstone-app-green-$CIRCLE_WORKFLOW_ID:latest
           docker push $DOCKER_USER/capstone-app-green-$CIRCLE_WORKFLOW_ID:latest
           
   create-eks-cluster:
@@ -123,8 +123,10 @@ workflows:
   default:
      jobs:
        - build-app
-       - Lint
-       - build-container
+       - lint-docker:
+           requires: [build-app]
+       - build-container:
+           requires: [lint-docker]
        # - create-eks-cluster:
        #     cluster-name: my-cap-cluster
        # - create-or-update-eks-deployment:
