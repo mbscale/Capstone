@@ -107,9 +107,9 @@ jobs:
           get-rollout-status: false
           resource-file-path: blue-controller.json
    #       resource-name: deployment/blue
-      - kubernetes/create-or-update-resource:
-           get-rollout-status: false
-           resource-file-path: green-controller.json
+   #   - kubernetes/create-or-update-resource:
+   #        get-rollout-status: false
+   #        resource-file-path: green-controller.json
    #        resource-name: deployment/green
       - kubernetes/create-or-update-resource:
           get-rollout-status: false
@@ -167,7 +167,7 @@ workflows:
        #- build-container:
        #    requires: [lint-docker]
        # - create-eks-cluster
-       # - create-or-update-eks-deployment
+         - create-or-update-eks-deployment
          - get-resources
        #     requires: [create-eks-cluster]
        # - create-or-update-eks-deployment-to-green:
