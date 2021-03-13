@@ -106,19 +106,20 @@ jobs:
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: blue-controller.json
-          resource-name: deployment/blue
+   #       resource-name: deployment/blue
       - kubernetes/create-or-update-resource:
            get-rollout-status: true
            resource-file-path: green-controller.json
-           resource-name: deployment/green
+   #        resource-name: deployment/green
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: blue-green-service.json
-          resource-name: deployment/service
+   #       resource-name: deployment/service
       - run:
           name: Check the Resources
           command: |
             kubectl get services
+            kubectl get pods
             kubectl get deploy,po -o wide
             kubectl get nodes -o wide
   
@@ -149,9 +150,9 @@ workflows:
        #    requires: [build-app]
        #- build-container:
        #    requires: [lint-docker]
-        - create-eks-cluster
-        - create-or-update-eks-deployment:
-            requires: [create-eks-cluster]
+       # - create-eks-cluster
+        - create-or-update-eks-deployment
+       #     requires: [create-eks-cluster]
        # - create-or-update-eks-deployment-to-green:
        #     cluster-name: my-cap-cluster
        #     requires: [create-or-update-eks-deployment]
