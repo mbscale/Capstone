@@ -167,13 +167,13 @@ workflows:
        #- build-container:
        #    requires: [lint-docker]
        # - create-eks-cluster
-         - create-or-update-eks-deployment
-         - get-resources:
-             requires: [create-or-update-eks-deployment]
+       #  - create-or-update-eks-deployment
+       #  - get-resources:
+       #      requires: [create-or-update-eks-deployment]
        #     requires: [create-eks-cluster]
        # - create-or-update-eks-deployment-to-green:
        #     cluster-name: my-cap-cluster
        #     requires: [create-or-update-eks-deployment]
-       # - aws-eks/delete-cluster:
-       #     cluster-name: my-cap-cluster
+         - aws-eks/delete-cluster:
+             cluster-name: my-cap-cluster
            
