@@ -132,7 +132,7 @@ jobs:
       - kubernetes/created-or-update-resource:
           get-rollout-status: true
           resource-file-path: blue-green-service.json
-          resource-name: deployment/service
+          resource-name: deployment/servicegreen
       - run:
           name: Check the Resources
           command: |
