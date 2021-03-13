@@ -107,11 +107,11 @@ jobs:
           get-rollout-status: true
           resource-file-path: blue-controller.json
           resource-name: deployment/blue
-  #    - kubernetes/create-or-update-resource:
-  #        get-rollout-status: true
-  #        resource-file-path: green-controller.json
-  #        resource-name: deployment/green
-      - kubernetes/created-or-update-resource:
+      - kubernetes/create-or-update-resource:
+           get-rollout-status: true
+           resource-file-path: green-controller.json
+           resource-name: deployment/green
+      - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: blue-green-service.json
           resource-name: deployment/service
