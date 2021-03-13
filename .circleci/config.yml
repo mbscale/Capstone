@@ -151,7 +151,6 @@ workflows:
        #    requires: [lint-docker]
         - create-eks-cluster
         - create-or-update-eks-deployment:
-            cluster-name: my-cap-cluster
             requires: [create-eks-cluster]
        # - create-or-update-eks-deployment-to-green:
        #     cluster-name: my-cap-cluster
