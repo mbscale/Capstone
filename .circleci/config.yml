@@ -149,8 +149,7 @@ workflows:
        #    requires: [build-app]
        #- build-container:
        #    requires: [lint-docker]
-        - create-eks-cluster:
-            cluster-name: my-cap-cluster
+        - create-eks-cluster
         - create-or-update-eks-deployment:
             cluster-name: my-cap-cluster
             requires: [create-eks-cluster]
